@@ -7,7 +7,7 @@
 #include <fstream>
 
 using namespace std;
-
+// Функция для модуляции QPSK
 vector<complex<double>> QPSK(int len_bits, vector<int> bits) {
     vector<complex<double>> QPSK_table;
     for  (int i  =  0; i  < len_bits; i = i + 2)
@@ -31,7 +31,7 @@ vector<complex<double>> QPSK(int len_bits, vector<int> bits) {
     }
     return  QPSK_table;
 }
-
+// Функция для наложения шума
 vector<complex<double>> noise(double disp, int numSamples, vector<complex<double>>qpsk) {
     vector<complex<double>> qwn;
     double mean = 0;
@@ -50,7 +50,7 @@ vector<complex<double>> noise(double disp, int numSamples, vector<complex<double
     }
     return qwn;
 }
-
+//Функция для демодуляции QPSK
 vector<int> demodQPSK(int len_bits, vector<complex<double>> QPSK_with_noise) {
     
     vector<int> new_bits;
@@ -80,7 +80,7 @@ vector<int> demodQPSK(int len_bits, vector<complex<double>> QPSK_with_noise) {
     }
     return new_bits;
 }
-
+// Функция для суммы ошибок на бит
 double calculateBER(vector<int> original_bits, vector<int> received_bits) {
     int error_count = 0;
     for (int i = 0; i < original_bits.size(); i++) {
