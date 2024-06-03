@@ -1,5 +1,5 @@
 #!/bin/bash
 
-c++ QPSK_QAM.cpp -o QPSK_QAM
+c++ QPSK_QAM.cc table.cc -o QPSK_QAM
 ./QPSK_QAM
 python3 graph.py
