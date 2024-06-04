@@ -35,18 +35,20 @@ using namespace std;
 #define QAM64_LEVEL_3  (5.0f  / sqrt(42.0f))
 #define QAM64_LEVEL_4  (7.0f  / sqrt(42.0f))
 
-/**
- * Данный класс хранит в себе комплексные числа для дальнейшего преобразования
- * из десятичных целых чисел в комплексные числа, в соответвии с QAM 
-*/
 class QAM_table
 {
     public:
     /**
-     * \return Возвращает указатель массива преобразования десятичного числа в комплексное для QAM
+     * \return Возвращает указатель массива преобразования десятичного числа в комплексное для QPSK
     */
         complex<double>* QPSKt();
+    /**
+     * \return Возвращает указатель массива преобразования десятичного числа в комплексное для QAM16
+    */
         complex<double>* QAM16t();
+    /**
+     * \return Возвращает указатель массива преобразования десятичного числа в комплексное для QAM64
+    */
         complex<double>* QAM64t();
 };
 
@@ -54,11 +56,25 @@ class QAMmod
 {
     public:
     /**
-     * \brief Принимает последовательность битов в массиве и длину массива
-     * \return Возвращает преобразованные биты в QAM последовательность
+     * \brief Модулятор QPSK
+     * \param Длина битов
+     * \param Вектор битов
+     * \return Возвращает преобразованные биты в QPSK последовательность
     */
         vector<complex<double>> QPSK(int len_bits, vector<int> bits);
+    /**
+     * \brief Модулятор QAM16
+     * \param Длина битов
+     * \param Вектор битов
+     * \return Возвращает преобразованные биты в QAM16 последовательность
+    */
         vector<complex<double>> QAM16(int len_bits, vector<int> bits);
+    /**
+     * \brief Модулятор QAM64
+     * \param Длина битов
+     * \param Вектор битов
+     * \return Возвращает преобразованные биты в QAM64 последовательность
+    */
         vector<complex<double>> QAM64(int len_bits, vector<int> bits);
 };
 
@@ -66,11 +82,25 @@ class QAMdemod
 {
     public:
     /**
-     * \brief Принимает QAM с шумом и длину исходных битов
-     * \return Возвращает последовательно битов после модуляции и демодуляции QAM
+     * \brief Демодулятор QPSK
+     * \param Длина битов
+     * \param Вектор QPSK с шумом
+     * \return Возвращает последовательность получившихся битов после модуляции и демодуляции
     */
         vector<int> demodQPSK(int len_bits, vector<complex<double>> QPSK_with_noise);
+    /**
+     * \brief Демодулятор QAM16
+     * \param Длина битов
+     * \param Вектор QAM16 с шумом
+     * \return Возвращает последовательность получившихся битов после модуляции и демодуляции
+    */
         vector<int> demodQAM16(int len_bits, vector<complex<double>> QPSK_with_noise);
+    /**
+     * \brief Демодулятор QAM64
+     * \param Длина битов
+     * \param Вектор QAM64 с шумом
+     * \return Возвращает последовательность получившихся битов после модуляции и демодуляции
+    */
         vector<int> demodQAM64(int len_bits, vector<complex<double>> QPSK_with_noise);
 };
 

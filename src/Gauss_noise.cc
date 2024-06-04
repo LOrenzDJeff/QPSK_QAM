@@ -1,6 +1,6 @@
 #include "Gauss_noise.h"
 
-vector<complex<double>> noise::Gauss_noise(double disp, int numSamples, vector<complex<double>>qpsk, double mean) {
+vector<complex<double>> noise::Gauss_noise(double disp, int numSamples, vector<complex<double>>QAM, double mean) {
     vector<complex<double>> qwn;
     double stddev = std::sqrt(disp);
     
@@ -13,7 +13,7 @@ vector<complex<double>> noise::Gauss_noise(double disp, int numSamples, vector<c
         double real_part = dist(gen);
         double imag_part = dist(gen);
         std::complex<double> sample(real_part, imag_part);
-        qwn.push_back(qpsk[i] + sample);
+        qwn.push_back(QAM[i] + sample);
     }
     return qwn;
 }
