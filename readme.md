@@ -15,7 +15,7 @@ QAM16, QAM64)
 
 # Пример графиков
 
-<img src = "BER(QPSK).png">
-<img src = "BER(QAM16).png">
-<img src = "BER(QAM64).png">
+<img src = "test/BER(QPSK).png">
+<img src = "test/BER(QAM16).png">
+<img src = "test/BER(QAM64).png">
 
