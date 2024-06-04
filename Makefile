@@ -2,11 +2,11 @@ CXX = g++
 
 TARGET = main
 
-SRCS = QPSK_QAM.cc Table.cc Gauss_noise.cc
+SRCS = src/QPSK_QAM.cc src/Table.cc src/Gauss_noise.cc
 
 OBJS = $(SRCS:.cc=.o)
 
-HEADERS = QPSK_QAM.h Gauss_noise.h
+HEADERS = src/QPSK_QAM.h src/Gauss_noise.h
 
 all: run_graph clean_objs
 
@@ -18,7 +18,7 @@ $(TARGET): $(OBJS)
 
 run_graph: $(TARGET)
 	./$(TARGET)
-	python3 graph.py
+	python3 src/Graph.py
 
 clean_objs:
 	rm -f $(OBJS)
