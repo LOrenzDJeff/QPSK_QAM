@@ -14,9 +14,9 @@
 #include <ctime>
 #include <vector>
 #include <complex>
-#include <random>
 #include <cmath>
 #include <fstream>
+#include "Gauss_noise.h"
 
 using namespace std;
 
@@ -42,31 +42,33 @@ using namespace std;
 class QAM_table
 {
     public:
+    /**
+     * \return Возвращает указатель массива преобразования десятичного числа в комплексное для QAM
+    */
         complex<double>* QPSKt();
         complex<double>* QAM16t();
         complex<double>* QAM64t();
 };
 
-/**
- * Данный класс производит модуляцию QAM 
-*/
 class QAMmod 
 {
     public:
+    /**
+     * \brief Принимает последовательность битов в массиве и длину массива
+     * \return Возвращает преобразованные биты в QAM последовательность
+    */
         vector<complex<double>> QPSK(int len_bits, vector<int> bits);
         vector<complex<double>> QAM16(int len_bits, vector<int> bits);
         vector<complex<double>> QAM64(int len_bits, vector<int> bits);
 };
 
-class noise
-{
-    public:
-        vector<complex<double>> haus_noise(double disp, int numSamples, vector<complex<double>>qpsk);
-};
-
 class QAMdemod
 {
     public:
+    /**
+     * \brief Принимает QAM с шумом и длину исходных битов
+     * \return Возвращает последовательно битов после модуляции и демодуляции QAM
+    */
         vector<int> demodQPSK(int len_bits, vector<complex<double>> QPSK_with_noise);
         vector<int> demodQAM16(int len_bits, vector<complex<double>> QPSK_with_noise);
         vector<int> demodQAM64(int len_bits, vector<complex<double>> QPSK_with_noise);

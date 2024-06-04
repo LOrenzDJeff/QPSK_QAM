@@ -48,25 +48,6 @@ vector<complex<double>> QAMmod::QAM64(int len_bits, vector<int> bits) {
     return QAM64_Mod;
 }
 
-vector<complex<double>> noise::haus_noise(double disp, int numSamples, vector<complex<double>>qpsk) {
-    vector<complex<double>> qwn;
-    double mean = 0;
-    double stddev = std::sqrt(disp);
-    
-    random_device rd;
-    mt19937 gen(rd());
-    
-    normal_distribution<> dist(mean, stddev);
-
-    for (int i = 0; i < numSamples; ++i) {
-        double real_part = dist(gen);
-        double imag_part = dist(gen);
-        std::complex<double> sample(real_part, imag_part);
-        qwn.push_back(qpsk[i] + sample);
-    }
-    return qwn;
-}
-
 vector<int> QAMdemod::demodQPSK(int len_bits, vector<complex<double>> QPSK_with_noise) {    
     vector<int> new_bits;
     QAM_table QPSK_table;
@@ -211,9 +192,9 @@ int main()
     {
         for (float j  =  0; j  <  1; j = j + 0.1)
         {
-            vector<complex<double>> QPSK_with_noise = make_some_noise.haus_noise(j, num_bits, QPSK_table);
-            vector<complex<double>> QAM16_with_noise = make_some_noise.haus_noise(j, num_bits, QAM16_table);
-            vector<complex<double>> QAM64_with_noise = make_some_noise.haus_noise(j, num_bits, QAM64_table);
+            vector<complex<double>> QPSK_with_noise = make_some_noise.Gauss_noise(j, num_bits, QPSK_table, 0);
+            vector<complex<double>> QAM16_with_noise = make_some_noise.Gauss_noise(j, num_bits, QAM16_table, 0);
+            vector<complex<double>> QAM64_with_noise = make_some_noise.Gauss_noise(j, num_bits, QAM64_table, 0);
 
             vector<int> return_bits  =  QAM_demodulate.demodQPSK(num_bits, QPSK_with_noise);
             vector<int> return_bits_16  =  QAM_demodulate.demodQAM16(num_bits, QAM16_with_noise);
@@ -241,7 +222,7 @@ int main()
     ofstream outFile64("ber_data_64.txt");
     if (!outFile64) {
         cerr << "Error opening file for writing!" << endl;
-        return 1;   
+        return 1;
     }
 
     for (float i  =  0; i  <  1; i = i + 0.1)
