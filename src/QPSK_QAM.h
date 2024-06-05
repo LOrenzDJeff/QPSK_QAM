@@ -41,7 +41,7 @@ class QAM_table
     /**
      * \return Возвращает указатель массива преобразования десятичного числа в комплексное для QPSK
     */
-        complex<double>* QPSKt();
+        complex<double> QPSK_formul(vector<int>& b);
     /**
      * \return Возвращает указатель массива преобразования десятичного числа в комплексное для QAM16
     */
