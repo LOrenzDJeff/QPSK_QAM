@@ -1,17 +1,16 @@
 #include "QPSK_QAM.h"
 
-vector<complex<double>> QAMmod::QPSK(int len_bits, vector<int> bits) {
-    int num_qpsk;
-    vector<complex<double>> QPSK_Mod;
-    vector<int> cache;
-    QAMtable QPSK_transform;
-    for (int i = 0; i < len_bits; i += 2)
+void QAMmod::QPSK(int len_bits, vector<int>& bits, vector<complex<double>>& QPSK_mod, vector<complex<double>>& table, int bit) {
+    int Zqpsk;
+    vector<int> cache(bit);
+    QPSK_mod.reserve(len_bits / bit);
+    for (int i = 0; i < len_bits; i += bit)
     {
-        for (int j = i; j < i + 2; j++)
+        for (int j = i; j < i + bit; j++)
             cache[j - i] = bits[j];
-//        QPSK_Mod.push_back(QPSK_transform.QPSK_formul(cache));
+        Zqpsk = cache[0] * 2 + cache[1];
+        QPSK_mod.push_back(table[Zqpsk]);
     }
-    return QPSK_Mod;
 }
 
 /*vector<complex<double>> QAMmod::QAM16(int len_bits, vector<int> bits) {
@@ -46,19 +45,18 @@ vector<complex<double>> QAMmod::QAM64(int len_bits, vector<int> bits) {
     return QAM64_Mod;
 }
 */
-vector<int> QAMdemod::demodQPSK(int len_bits, vector<complex<double>> QPSK_with_noise) {    
+vector<int> QAMdemod::demodQPSK(int len_bits, vector<complex<double>>& QPSK_with_noise, vector<complex<double>>& table, int bit) {    
     vector<int> new_bits;
-    QAMtable QPSK_table;
     double mindistance;
     int bitdis;
-    for (int i = 0; i < len_bits / 2; i++) 
+    for (int i = 0; i < len_bits / bit; i++) 
     {
         double distance;
-//        mindistance = abs(table[0] - QPSK_with_noise[i]);
+        mindistance = abs(table[0] - QPSK_with_noise[i]);
         bitdis = 0;
-        for (int j = 1; j < 4; j++)  
+        for (int j = 1; j < bit ^ 2; j++)  
         {
-//            distance = abs(table[j] - QPSK_with_noise[i]);
+            distance = abs(table[j] - QPSK_with_noise[i]);
             if (distance  <  mindistance)
             {
                 mindistance = distance;
@@ -161,22 +159,39 @@ double calculateBER(vector<int> original_bits, vector<int> received_bits) {
 int main()
 {   
     QAMtable QAM_table;
-    vector<complex<double>>& table = QAM_table.QPSK_formul();
+    vector<complex<double>> tableQPSK;
+    int bitQPSK = 2;
+    QAM_table.QPSK_formul(tableQPSK, bitQPSK);
     QAMmod QAM_modulate;
     noise make_some_noise;
     QAMdemod QAM_demodulate;
     srand(time(0));
+    int len_bits = 240;
     vector<int> bits;
-    int num_bits = 240;
-    for (int i  =  0; i  < num_bits; i++)  
+    for (int i  =  0; i  < len_bits; i++)  
     {
         bits.push_back(rand() % 2);
+        cout << bits[i];
     }
+    cout << endl;
 
-    vector<complex<double>> QPSK_table = QAM_modulate.QPSK(num_bits, bits);
-    vector<complex<double>> QAM16_table = QAM_modulate.QAM16(num_bits, bits);
-    vector<complex<double>> QAM64_table = QAM_modulate.QAM64(num_bits, bits);
+    vector<complex<double>> QPSK_table;
+    QAM_modulate.QPSK(len_bits, bits, QPSK_table, tableQPSK, bitQPSK);
     
+    vector<double> global_ber(10);
+    for (int i = 0; i < 1000; i++)
+    {
+        for (float j  =  0; j  <  1; j = j + 0.1)
+        {
+            vector<complex<double>> QPSK_with_noise = make_some_noise.Gauss_noise(j, len_bits / bitQPSK, QPSK_table, 0);
+            vector<int> return_bits  =  QAM_demodulate.demodQPSK(len_bits, QPSK_with_noise, tableQPSK, bitQPSK);
+        }
+
+    }
+    //vector<complex<double>> QAM16_table = QAM_modulate.QAM16(num_bits, bits);
+    //vector<complex<double>> QAM64_table = QAM_modulate.QAM64(num_bits, bits);
+
+    /*
     vector<double> ber_values;
 
     double global_ber[10], global_ber_16[10], global_ber_64[10];
@@ -235,6 +250,6 @@ int main()
     outFile.close();
     outFile16.close();
     outFile64.close();
-
+*/
     return 0;
 }

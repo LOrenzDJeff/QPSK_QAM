@@ -41,7 +41,7 @@ class QAMtable
     /**
      * \return Возвращает указатель массива преобразования десятичного числа в комплексное для QPSK
     */
-        vector<complex<double>>& QPSK_formul();
+        void QPSK_formul(vector<std::complex<double>>& table, int bit);
     /**
      * \return Возвращает указатель массива преобразования десятичного числа в комплексное для QAM16
     */
@@ -61,7 +61,7 @@ class QAMmod
      * \param Вектор битов
      * \return Возвращает преобразованные биты в QPSK последовательность
     */
-        vector<complex<double>> QPSK(int len_bits, vector<int> bits);
+        void QPSK(int len_bits, vector<int>& bits, vector<complex<double>>& QPSK_mod, vector<complex<double>>& table, int bit);
     /**
      * \brief Модулятор QAM16
      * \param Длина битов
@@ -87,7 +87,7 @@ class QAMdemod
      * \param Вектор QPSK с шумом
      * \return Возвращает последовательность получившихся битов после модуляции и демодуляции
     */
-        vector<int> demodQPSK(int len_bits, vector<complex<double>> QPSK_with_noise);
+        vector<int> demodQPSK(int len_bits, vector<complex<double>>& QPSK_with_noise, vector<complex<double>>& table, int bit);
     /**
      * \brief Демодулятор QAM16
      * \param Длина битов

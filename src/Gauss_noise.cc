@@ -1,19 +1,19 @@
 #include "Gauss_noise.h"
 
-vector<complex<double>> noise::Gauss_noise(double disp, int numSamples, vector<complex<double>>QAM, double mean) {
+vector<complex<double>> noise::Gauss_noise(double disp, int lenQAM, vector<complex<double>> QAM, double mean) {
     vector<complex<double>> qwn;
-    double stddev = std::sqrt(disp);
+    double stddev = sqrt(disp);
     
     random_device rd;
     mt19937 gen(rd());
     
     normal_distribution<> dist(mean, stddev);
 
-    for (int i = 0; i < numSamples; ++i) {
+    for (int i = 0; i < lenQAM; ++i) {
         double real_part = dist(gen);
         double imag_part = dist(gen);
-        std::complex<double> sample(real_part, imag_part);
-        qwn.push_back(QAM[i] + sample);
+        complex<double> sample(real_part, imag_part);
+        QAM[i] += sample;
     }
     return qwn;
 }

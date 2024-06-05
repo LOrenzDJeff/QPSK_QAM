@@ -19,7 +19,7 @@ class noise
      * \param Матожидание
      * \return Возвращает QAM с шумом
     */
-        vector<complex<double>> Gauss_noise(double disp, int numSamples, vector<complex<double>>QAM, double mean);
+        vector<complex<double>> Gauss_noise(double disp, int numSamples, vector<complex<double>> QAM, double mean);
     /**
      * \param сетер дисперсии
     */

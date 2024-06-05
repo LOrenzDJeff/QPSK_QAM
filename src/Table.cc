@@ -1,12 +1,11 @@
 #include "QPSK_QAM.h"
 
-vector<complex<double>>& QAMtable::QPSK_formul()
+void QAMtable::QPSK_formul(vector<std::complex<double>>& table, int bit)
 {
-    vector<complex<double>> table;
-    for (int i = 0; i < 2; i ++)
-        for (int j = 0; j < 2; j ++)
+    table.reserve(2 ^ bit);
+    for (double i = 0; i < bit; i ++)
+        for (double j = 0; j < bit; j ++)
             table.push_back(complex<double>((1.0 - 2.0 * i) / sqrt(2.0), (1.0 - 2.0 * j) / sqrt(2.0)));
-    return table;
 }
 /*
 complex<double>* QAM_table::QAM16t()
