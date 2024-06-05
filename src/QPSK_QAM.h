@@ -35,13 +35,13 @@ using namespace std;
 #define QAM64_LEVEL_3  (5.0f  / sqrt(42.0f))
 #define QAM64_LEVEL_4  (7.0f  / sqrt(42.0f))
 
-class QAM_table
+class QAMtable
 {
     public:
     /**
      * \return Возвращает указатель массива преобразования десятичного числа в комплексное для QPSK
     */
-        complex<double> QPSK_formul(vector<int>& b);
+        vector<complex<double>>& QPSK_formul();
     /**
      * \return Возвращает указатель массива преобразования десятичного числа в комплексное для QAM16
     */

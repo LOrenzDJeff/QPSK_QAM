@@ -3,20 +3,18 @@
 vector<complex<double>> QAMmod::QPSK(int len_bits, vector<int> bits) {
     int num_qpsk;
     vector<complex<double>> QPSK_Mod;
-    QAM_table QPSK_table;
-    complex<double>* table = QPSK_table.QPSKt();
+    vector<int> cache;
+    QAMtable QPSK_transform;
     for (int i = 0; i < len_bits; i += 2)
     {
-        int cache[2];
         for (int j = i; j < i + 2; j++)
             cache[j - i] = bits[j];
-        num_qpsk = cache[0] * 2 + cache[1];
-        QPSK_Mod.push_back(table[num_qpsk]);
+//        QPSK_Mod.push_back(QPSK_transform.QPSK_formul(cache));
     }
     return QPSK_Mod;
 }
 
-vector<complex<double>> QAMmod::QAM16(int len_bits, vector<int> bits) {
+/*vector<complex<double>> QAMmod::QAM16(int len_bits, vector<int> bits) {
     int num_qam16;
     vector<complex<double>> QAM16_Mod;
     QAM_table QAM16_table;
@@ -47,21 +45,20 @@ vector<complex<double>> QAMmod::QAM64(int len_bits, vector<int> bits) {
     }
     return QAM64_Mod;
 }
-
+*/
 vector<int> QAMdemod::demodQPSK(int len_bits, vector<complex<double>> QPSK_with_noise) {    
     vector<int> new_bits;
-    QAM_table QPSK_table;
-    complex<double>* table = QPSK_table.QPSKt();
+    QAMtable QPSK_table;
     double mindistance;
     int bitdis;
     for (int i = 0; i < len_bits / 2; i++) 
     {
         double distance;
-        mindistance = abs(table[0] - QPSK_with_noise[i]);
+//        mindistance = abs(table[0] - QPSK_with_noise[i]);
         bitdis = 0;
         for (int j = 1; j < 4; j++)  
         {
-            distance = abs(table[j] - QPSK_with_noise[i]);
+//            distance = abs(table[j] - QPSK_with_noise[i]);
             if (distance  <  mindistance)
             {
                 mindistance = distance;
@@ -81,7 +78,7 @@ vector<int> QAMdemod::demodQPSK(int len_bits, vector<complex<double>> QPSK_with_
     }
     return new_bits;
 }
-
+/*
 vector<int> QAMdemod::demodQAM16(int len_bits, vector<complex<double>> QAM16_with_noise) {    
     vector<int> new_bits;
     QAM_table QAM16_table;
@@ -149,7 +146,7 @@ vector<int> QAMdemod::demodQAM64(int len_bits, vector<complex<double>> QAM64_wit
     }
     return new_bits;
 }
-
+*/
 // Функция для суммы ошибок на бит
 double calculateBER(vector<int> original_bits, vector<int> received_bits) {
     int error_count = 0;
@@ -162,7 +159,9 @@ double calculateBER(vector<int> original_bits, vector<int> received_bits) {
 }
 
 int main()
-{
+{   
+    QAMtable QAM_table;
+    vector<complex<double>>& table = QAM_table.QPSK_formul();
     QAMmod QAM_modulate;
     noise make_some_noise;
     QAMdemod QAM_demodulate;

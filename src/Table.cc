@@ -1,18 +1,14 @@
 #include "QPSK_QAM.h"
 
-complex<double> QAM_table::QPSK_formul(vector<int>& b)
+vector<complex<double>>& QAMtable::QPSK_formul()
 {
-    complex<double> d = (1 - 2 * b[0], 1 - 2 * b[1]);
-   /* complex<double>* table = new complex<double>[4];
-    table[0] = complex<double>(QPSK_LEVEL, QPSK_LEVEL);
-    table[1] = complex<double>(QPSK_LEVEL, -QPSK_LEVEL);
-    table[2] = complex<double>(-QPSK_LEVEL, QPSK_LEVEL);
-    table[3] = complex<double>(-QPSK_LEVEL, -QPSK_LEVEL);
+    vector<complex<double>> table;
+    for (int i = 0; i < 2; i ++)
+        for (int j = 0; j < 2; j ++)
+            table.push_back(complex<double>((1.0 - 2.0 * i) / sqrt(2.0), (1.0 - 2.0 * j) / sqrt(2.0)));
     return table;
-    */
-   return d;
 }
-
+/*
 complex<double>* QAM_table::QAM16t()
 {
     complex<double>* table = new complex<double>[16];
@@ -104,3 +100,4 @@ complex<double>* QAM_table::QAM64t()
     table[63] = complex<double>(-QAM64_LEVEL_4, -QAM64_LEVEL_4);
     return table;
 }
+*/
